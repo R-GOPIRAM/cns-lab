@@ -1,0 +1,96 @@
+<html>
+<head>
+    <title>RSA Encryption</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<center>
+    <h1>RSA Algorithm</h1>
+    <h2>Implemented Using HTML & JavaScript</h2>
+    <hr>
+    <table>
+        <tr>
+            <td>Enter First Prime Number:</td>
+            <td><input type="number" value="53" id="p"></td>
+        </tr>
+        <tr>
+            <td>Enter Second Prime Number:</td>
+            <td><input type="number" value="59" id="q"></td>
+        </tr>
+        <tr>
+            <td>Enter the Message (plaintext):<br>[A=1, B=2, ...]</td>
+            <td><input type="number" value="89" id="msg"></td>
+        </tr>
+        <tr>
+            <td>Public Key (n):</td>
+            <td><p id="publickey"></p></td>
+        </tr>
+        <tr>
+            <td>Exponent (e):</td>
+            <td><p id="exponent"></p></td>
+        </tr>
+        <tr>
+            <td>Private Key (d):</td>
+            <td><p id="privatekey"></p></td>
+        </tr>
+        <tr>
+            <td>Cipher Text:</td>
+            <td><p id="ciphertext"></p></td>
+        </tr>
+        <tr>
+            <td>Decrypted Text:</td>
+            <td><p id="decryptedtext"></p></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button onclick="RSA();">Apply RSA</button></td>
+        </tr>
+    </table>
+</center>
+
+<script type="text/javascript">
+function RSA() {
+    var gcd, p, q, no, n, t, e, i, x, d;
+
+    // Function for GCD
+    gcd = function(a, b) { return (!b) ? a : gcd(b, a % b); };
+
+    // Get input values
+    p = document.getElementById('p').value;
+    q = document.getElementById('q').value;
+    no = document.getElementById('msg').value;
+
+    n = p * q;
+    t = (p - 1) * (q - 1);
+
+    // Find e
+    for (e = 2; e < t; e++) {
+        if (gcd(e, t) == 1) { break; }
+    }
+
+    // Find d
+    for (i = 0; i < 10; i++) {
+        x = 1 + i * t;
+        if (x % e == 0) {
+            d = x / e;
+            break;
+        }
+    }
+
+    // Encryption
+    var ctt = Math.pow(no, e).toFixed(0);
+    var ct = ctt % n;
+
+    // Decryption
+    var dtt = Math.pow(ct, d).toFixed(0);
+    var dt = dtt % n;
+
+    // Display results
+    document.getElementById('publickey').innerHTML = n;
+    document.getElementById('exponent').innerHTML = e;
+    document.getElementById('privatekey').innerHTML = d;
+    document.getElementById('ciphertext').innerHTML = ct;
+    document.getElementById('decryptedtext').innerHTML = dt;
+}
+</script>
+</body>
+</html>
